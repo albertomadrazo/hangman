@@ -1,17 +1,100 @@
 class Board
-	attr_reader :word, :tries
+	attr_reader :word, :tries, :board_drawing
 	attr_accessor :covered_word, :discarded_letters, :won
 
 	def initialize
 		@word = get_word_from_dict
-		@tries = 5
+		@tries = 0
 		@covered_word = "_" * @word.length
 		@won = won
 		@discarded_letters = []
 	end
 
 	def drawing
-		drawing = [%{
+@drawing =
+	[%{
+         +-------+
+         |       |
+         |       |
+         |       
+         |
+         |
+         |
+         |
+         |},
+     %{
+         +-------+
+         |       |
+         |       |
+         |       _
+         |      (_)
+         |  
+         |      
+         |     
+         |    
+         |   
+         |},
+     %{
+         +-------+
+         |       |
+         |       |
+         |       _
+         |      (_)
+         |      | |
+         |      | |
+         |       V
+         |    
+         |   
+         |},   
+         %{
+         +-------+
+         |       |
+         |       |
+         |       _
+         |      (_)
+         |  x===| |
+         |      | |
+         |       V 
+         |    
+         |   
+         |},
+     %{
+         +-------+
+         |       |
+         |       |
+         |       _
+         |      (_)
+         |  x===| |===x
+         |      | |
+         |       V 
+         | 
+         |   
+         |},
+     %{
+         +-------+
+         |       |
+         |       |
+         |       _
+         |      (_)
+         |  x===| |===x
+         |      | |
+         |     / V
+         |    / /
+         |   ---  
+         |},
+     %{
+         +-------+
+         |       |
+         |       |
+         |       _
+         |      (_)
+         |  x===| |===x
+         |      | |
+         |     / V \\
+         |    / / \\ \\
+         |   ---   ---
+         |},
+	 %{
               ____
              /    \\
             / X  X \\
@@ -19,10 +102,8 @@ class Board
              | .. |
              (----)
               \\__/
-		},
-		%w{
-		              __|  |__
-		}] # pendiente
+		}
+]
 	end
 
 	def covered_word
@@ -43,9 +124,6 @@ class Board
 	def word
 		@word
 	end
-	# def random_word
-	# 	@random_word = get_word_from_dict
-	# end
 
 	def get_word_from_dict
 		dict_terms = File.readlines("5desk.txt")
@@ -66,7 +144,7 @@ class Board
 			end
 			message = "Well done."
 		else
-			@tries -= 1
+			@tries += 1
 			@discarded_letters << letter unless @discarded_letters.include? letter
 			message = "No, you're wrong. #{tries} tries left"
 		end
@@ -75,7 +153,7 @@ class Board
 
 	def save_game game, filename
 		saved_game = YAML::dump game
-		date = DateTime.strptime('%Y%m%d%h%m%s')
+		date = DateTime.now
 		filename += " - #{date}"
 		File.open("#{filename}.yml", 'w'){|game| game.write(saved_game)}
 		filename

@@ -1,4 +1,0 @@
---- !ruby/object:Board
-tries: 5
-won: false
-discarded_letters: []
